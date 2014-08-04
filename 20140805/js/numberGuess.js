@@ -13,7 +13,7 @@
 * TODO: add betting feature once log2() function can be found or written
 */
 
-	alert("First Code");
+	// alert("First Code");
 	var answer = 0;
 	var minRange = 0;
 	var maxRange = 0;
@@ -63,7 +63,7 @@
 			maxRange = getNumber("What is the largest number you'd like in the game?");
 		}
 
-		guesserAnswer = prompt("Would you like to guess a number between " + minRange + " and " + maxRange + "?");
+		guesserAnswer = prompt("Would you like to do the guessing of a number between " + minRange + " and " + maxRange + "?");
 
 		if(yes(guesserAnswer)) {
 			guesser = "Human";
@@ -72,14 +72,14 @@
 			guesser = "Computer";
 		}
 
-		document.write(guesser + " will guess a number between " + minRange + " and " + maxRange);	
+		lineout(guesser + " will guess a number between " + minRange + " and " + maxRange);	
 	}
 
 getGameParameters();
 
 correct = false;
 if(guesser == "Human") {
-		lineout("Human guessing");
+		// lineout("Human guessing");
 
 		answer = Math.floor(Math.random() * ((maxRange - minRange) + 1)) + toNumber(minRange);
 
