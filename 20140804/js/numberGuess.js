@@ -9,7 +9,7 @@
 *       whether the number is too high or low
 *		(a) The computer will ask the human whether they want to place a bet that they will
 *       guess the number in log2(Max-min) guesses?
-*
+* 
 */
 
 	// alert("First Code");
@@ -27,7 +27,7 @@
 
 		while(! isNumber) {
 			userInput = toNumber(prompt(promptPhrase));
-			isNumber = true; //! userInput.isNaN();
+			isNumber = ! isNaN(userInput);
 			// document.write(isNumber);
 		}
 
@@ -81,32 +81,20 @@
 		lineout(guesser + " will guess a number between " + minRange + " and " + maxRange);
 	}
 
-function gameProcess() {
-  var answer = 0;
+function humanGuess () {
+	var answer = 0;
   var correct = false;
   var guess = 0;
   var numGuesses = 0;
-  var maxGuesses = 0;
-  var wager = false;
-  var cheat = false;
-
-  maxGuesses = approxLog2(maxRange-minRange+1);
-
-  if(guesser == "Human") {
 
 		answer = Math.floor(Math.random() * ((maxRange - minRange) + 1)) + toNumber(minRange);
-
-    wager = yes(prompt("Do you think you can guess the number in " + maxGuesses + " guesses?"));
 
 		while( ! correct ) {
 			guess = getNumber("What is your guess?");
       numGuesses++;
 
 			correct = (guess == answer);
-			if( correct ) {
-					lineout("You are correct! The number is: " + guess);
-			}
-			else {
+			if ( ! correct ) {
 				if( guess > answer) {
 					lineout("Your guess " + guess + " is too big");
 					if( guess > maxRange) {
@@ -121,14 +109,19 @@ function gameProcess() {
 				}
 			}
 		}
-  }
-  else {
-  	var	curMax = toNumber(maxRange);
-  	var curMin = toNumber(minRange);
+	lineout("You are correct! The number is: " + guess);
+	return numGuesses;
+}
+function computerGuess () {
+	var answer = 0;
+  var correct = false;
+  var guess = 0;
+  var numGuesses = 0;
 
-  	answer = prompt("Don't tell me, but think of a number between " + minRange + " and " + maxRange + " and press Enter");
+  var	curMax = toNumber(maxRange);
+  var curMin = toNumber(minRange);
 
-    wager = !yes(prompt("Do you think I can guess the number in " + maxGuesses + " guesses?"));
+  	alert("Think of a number between " + minRange + " and " + maxRange + " and press Enter");
 
   	while(!correct) {
   		var humanResponse;
@@ -142,8 +135,7 @@ function gameProcess() {
 
   		if(! correct) {
   			if(curMin >= curMax) {
-  				lineout("I think we should stop playing now");
-          cheat = true;
+          numGuesses = 0;
   				correct = true;
   			}
   			else {
@@ -157,22 +149,37 @@ function gameProcess() {
   			}
   		}
   	}
+  	return numGuesses;
+}
+
+function gameProcess() {
+  var numGuesses = 0;
+  var maxGuesses = 0;
+  var wager = false;
+
+  maxGuesses = approxLog2(maxRange-minRange+1);
+
+  if(guesser == "Human") {
+  	wager = yes(prompt("Do you think you can guess the number in " + maxGuesses + " guesses?"));
+  	numGuesses = humanGuess();
+  }
+  else {
+  	wager = !yes(prompt("Do you think I can guess the number in " + maxGuesses + " guesses?"));
+  	numGuesses = computerGuess();
   }
 
-  if(!cheat) {
+  if( numGuesses > 0 ) {
     lineout("Only took " + numGuesses + " guesses");
-  }
-
-  if(wager) {
-    if(cheat) {
-      lineout("Human reneged; Computer wins!");
-    } else {
+    if(wager) {
       if(numGuesses <= maxGuesses) {
         lineout(guesser + " wins!!!");
       } else {
         lineout(guesser + " lost");
       }
     }
+  } else {
+  	// If human cheats, computerGuess() returns 0
+  	lineout("Human reneged, Computer wins!");
   }
 
 	lineout("Thank you for the game!");
