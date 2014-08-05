@@ -27,7 +27,7 @@
 
 		while(! isNumber) {
 			userInput = toNumber(prompt(promptPhrase));
-			isNumber = true; //! userInput.isNaN();
+			isNumber = ! isNaN(userInput);
 			// document.write(isNumber);
 		}
 
@@ -126,7 +126,7 @@ function gameProcess() {
   	var	curMax = toNumber(maxRange);
   	var curMin = toNumber(minRange);
 
-  	answer = prompt("Don't tell me, but think of a number between " + minRange + " and " + maxRange + " and press Enter");
+  	alert("Think of a number between " + minRange + " and " + maxRange + " and press Enter");
 
     wager = !yes(prompt("Do you think I can guess the number in " + maxGuesses + " guesses?"));
 
